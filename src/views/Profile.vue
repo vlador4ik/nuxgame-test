@@ -9,8 +9,8 @@
     </div>
   </template>
   <script setup>
-  import UserProfile from '../components/UserProfile.vue';
-  import TodoList from '../components/TodoList.vue';
+  import UserProfile from '../components/User/UserProfile.vue';
+  import TodoList from '../components/Todo/TodoList.vue';
   const user = JSON.parse(localStorage.getItem("user"));
   
   </script>

@@ -1,6 +1,6 @@
 <template>
     <div class="user_profile">
-        <User :id="user.user_id" />
+        <User class="user" :users="usersList" :id="user.id" />
         <a class="info_wrapper" :href="'mailto:' + user.email">
             <img src="/public/images/mail.svg" alt="">
             {{ user.email }} </a>
@@ -15,18 +15,30 @@
     </div>
 </template>
 <script setup>
-
-import User from './User.vue';
+import { onBeforeMount, reactive } from 'vue';
+import User from '../User/User.vue';
 
 defineProps({
     user: Object
 });
+
+const usersList = reactive([]);
+
+onBeforeMount(async () => {
+    const usersResponse = await fetch('https://jsonplaceholder.typicode.com/users');
+    const users = await usersResponse.json();
+    usersList.push(...users);
+})
 
 </script>
 
 <style lang="scss" scoped>
 @import "/src/assets/variables.scss";
     .user_profile {
+
+        .user {
+            margin-bottom: 15px;
+        }
         
         .info_wrapper {
             display: flex;

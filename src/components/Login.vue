@@ -47,7 +47,6 @@ const onSubmit = async () => {
     
     const response = await fetch('https://jsonplaceholder.typicode.com/users');
     const users = await response.json();
-    console.log(users);
 
     const isUser = users.find(user => user.username === username.value && user.phone === phone.value);
     if (isUser) {
