@@ -23,7 +23,9 @@
     </div>
 </template>
 <script setup>
-import { ref } from "vue"
+import { ref } from "vue";
+import { useRouter } from 'vue-router';
+const router = useRouter()
 
 const username = ref();
 const phone = ref();
@@ -31,17 +33,17 @@ const errorMessage = ref();
 
 const onSubmit = async () => {
     const regexForUsername = /^[A-Za-z]+$/;
-    const regexForPhone = /^[0-9][-]\s+$/;
+    // const regexForPhone = /^[0-9][-]\s+$/;
 
     if(!regexForUsername.test(username.value)) {
         errorMessage.value = "Username is not valid. It accepts only alphabetic characters";
         return;
     }
 
-    if(!regexForPhone.test(phone.value)) {
-        errorMessage.value = "Phone is not valid. It accepts only numbers and special symbols";
-        return;
-    }
+    // if(!regexForPhone.test(phone.value)) {
+    //     errorMessage.value = "Phone is not valid. It accepts only numbers and special symbols";
+    //     return;
+    // }
     
     const response = await fetch('https://jsonplaceholder.typicode.com/users');
     const users = await response.json();
@@ -49,7 +51,8 @@ const onSubmit = async () => {
 
     const isUser = users.find(user => user.username === username.value && user.phone === phone.value);
     if (isUser) {
-        console.log(true);
+        localStorage.setItem('user', JSON.stringify(isUser));
+        router.push('/profile');
     } else {
         errorMessage.value = "Login error. Username or phone is incorrect!"
     }
@@ -57,9 +60,7 @@ const onSubmit = async () => {
 </script>
 
 <style lang="scss" scoped>
-$black: #353535;
-$grey: #5F5F5F;
-
+@import "/src/assets/variables.scss";
 .login_wrapper {
     display: flex;
     align-items: center;
