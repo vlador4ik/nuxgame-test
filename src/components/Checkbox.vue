@@ -1,13 +1,13 @@
 <template>
     <div class="checkbox_wrapper">
-        <div class="checkbox" @click="toggleChecked()" :class="{ 'checked': isChecked }">
+        <div class="checkbox" :title="isChecked ? 'Mark as Uncomplete' : 'Mark as Complete'" @click="toggleChecked()" :class="{ 'checked': isChecked }">
             <span class="checkmark">&#10003;</span>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 
 const props = defineProps(['checked']);
 let isChecked = ref(props.checked);
@@ -15,6 +15,12 @@ let isChecked = ref(props.checked);
 const toggleChecked = () => {
     isChecked.value = !isChecked.value;
 }
+
+const emit = defineEmits(['checkboxChecked']);
+
+watchEffect(() => {
+    emit('checkboxChecked', isChecked.value);
+})
 
 </script>
 
