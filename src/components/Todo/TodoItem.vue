@@ -1,15 +1,18 @@
 <template>
     <div class="todo" :class="{ 'completed': completed }">
         <div class="wrapper">
-            <User :small-avatar="true" :users="users" :id="todo.userId" />
+            <User :small="true" :users="users" :id="todo.userId" />
+            <p class="name"> {{ todo.title }} </p>
             <div class="actions">
                 <Checkbox :checked="completed" @checkboxChecked="checkboxChanged" />
-                <div class="favorite_container">
-                    <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402m5.726-20.583c-2.203 0-4.446 1.042-5.726 3.238-1.285-2.206-3.522-3.248-5.719-3.248-3.183 0-6.281 2.187-6.281 6.191 0 4.661 5.571 9.429 12 15.809 6.43-6.38 12-11.148 12-15.809 0-4.011-3.095-6.181-6.274-6.181"/></svg>
+                <div class="favorite_container" :class="{'active': todo.favorite}" @click="toggleFavorites(todo)">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6.25 1.5C3.07485 1.5 0.5 4.0484 0.5 7.1925C0.5 9.73055 1.50625 15.7543 11.4112 21.8435C11.5886 21.9515 11.7923 22.0086 12 22.0086C12.2077 22.0086 12.4114 21.9515 12.5888 21.8435C22.4937 15.7543 23.5 9.73055 23.5 7.1925C23.5 4.0484 20.9251 1.5 17.75 1.5C14.5748 1.5 12 4.95 12 4.95C12 4.95 9.42515 1.5 6.25 1.5Z" stroke="#383838" stroke-width="0.958333" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                 </div>
             </div>
         </div>
-        <p class="name"> {{ todo.title }} </p>
+
     </div>
 </template>
 
@@ -29,6 +32,44 @@ const completed = ref(props.todo.completed);
 const checkboxChanged = (checkbox) => {
     completed.value = checkbox;
 };
+
+// Check if favorites exist in local storage 
+// I created a clone of todos in TodoList
+// anyway I think update or add properties in props it's not a good idea.
+const data = localStorage.getItem('favorites');
+
+if(data) {
+    const favorites = JSON.parse(data);
+
+    const isCurrentTodoInFavorite = favorites.find(favorite => favorite == props.todo.id);
+
+    if(isCurrentTodoInFavorite) props.todo.favorite = true;
+}
+
+const toggleFavorites = (todo) => {
+    const favorites = localStorage.getItem('favorites');
+    let favoritesToLocaleStorage = [];
+
+    if(favorites) {
+        const favoritesArray = JSON.parse(favorites);
+        const isFavoriteExist = favoritesArray.find(favoriteId => favoriteId == todo.id);
+
+        if(isFavoriteExist) {
+            todo.favorite = false;
+            favoritesToLocaleStorage = favoritesArray.filter(favorite => favorite != todo.id);
+        } else {
+            favoritesToLocaleStorage = favoritesArray;
+            todo.favorite = true;
+            favoritesToLocaleStorage.push(todo.id);
+        }
+
+    } else {
+        favoritesToLocaleStorage.push(todo.id);
+    }
+    
+    localStorage.setItem('favorites', JSON.stringify(favoritesToLocaleStorage));
+};
+
 </script>
 
 <style lang="scss" scoped>
@@ -38,20 +79,17 @@ const checkboxChanged = (checkbox) => {
     padding: 10px;
     box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
-    flex: 20%;
+    min-height: 100%;
 
     .name {
         font-size: 16px;
-        margin-top: 10px;
-        margin-bottom: 0;
+        margin: 0;
     }
 
     .wrapper {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 5px;
+        flex-direction: column;
+        gap: 10px;
 
         .actions {
             display: flex;
@@ -65,4 +103,14 @@ const checkboxChanged = (checkbox) => {
             text-decoration: line-through;
         }
     }
-}</style>
+    .favorite_container {
+        &.active {
+            svg {
+                path {
+                    fill: red;
+                }
+            }
+        }
+    }
+}
+</style>
