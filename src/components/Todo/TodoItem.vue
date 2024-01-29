@@ -4,7 +4,7 @@
             <User :small="true" :users="users" :id="todo.userId" />
             <p class="name"> {{ todo.title }} </p>
             <div class="actions">
-                <Checkbox :checked="completed" @checkboxChecked="checkboxChanged" />
+                <Checkbox :checked="completed" @checkbox-checked="checkboxChanged" />
                 <div class="favorite_container" :class="{'active': todo.favorite}" @click="toggleFavorites(todo)">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M6.25 1.5C3.07485 1.5 0.5 4.0484 0.5 7.1925C0.5 9.73055 1.50625 15.7543 11.4112 21.8435C11.5886 21.9515 11.7923 22.0086 12 22.0086C12.2077 22.0086 12.4114 21.9515 12.5888 21.8435C22.4937 15.7543 23.5 9.73055 23.5 7.1925C23.5 4.0484 20.9251 1.5 17.75 1.5C14.5748 1.5 12 4.95 12 4.95C12 4.95 9.42515 1.5 6.25 1.5Z" stroke="#383838" stroke-width="0.958333" stroke-linecap="round" stroke-linejoin="round"/>
@@ -77,7 +77,7 @@ const toggleFavorites = (todo) => {
 
 .todo {
     padding: 10px;
-    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: $shadow;
     border-radius: 10px;
     min-height: 100%;
 
@@ -104,6 +104,7 @@ const toggleFavorites = (todo) => {
         }
     }
     .favorite_container {
+        cursor: pointer;
         &.active {
             svg {
                 path {
