@@ -1,7 +1,7 @@
 <template>
     <div class="user_wrapper" :class="{ 'small': props.small }">
         <div class="user_image">
-            <img src="/public/images/user.svg" alt="">
+            <img src="/images/user.svg" alt="">
         </div>
         <span class="name"> {{ user?.name }} </span>
     </div>

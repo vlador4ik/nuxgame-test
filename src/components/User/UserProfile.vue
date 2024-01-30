@@ -2,14 +2,14 @@
     <div class="user_profile">
         <User class="user" :users="usersList" :id="user.id" />
         <a class="info_wrapper" :href="'mailto:' + user.email">
-            <img src="/public/images/mail.svg" alt="">
+            <img src="/images/mail.svg" alt="">
             {{ user.email }} </a>
         <a class="info_wrapper" :href="'tel:' + user.phone">
-            <img src="/public/images/call.svg" alt="">
+            <img src="/images/call.svg" alt="">
             {{ user.phone }}
         </a>
         <a class="info_wrapper" :href="'tel:' + user.phone">
-            <img src="/public/images/map.svg" alt="">
+            <img src="/images/map.svg" alt="">
             {{ user.address.city }}, {{ user.address.street }}, {{ user.address.suite }}
         </a>
     </div>
