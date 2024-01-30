@@ -43,12 +43,12 @@ const onSubmit = async () => {
     const regexForPhone = /[0-9 ()\-\+]+$/;
 
     if(!regexForUsername.test(username.value)) {
-        errorMessage.value = "Username is not valid. It accepts only alphabetic characters";
+        errorMessage.value = "Username is not valid. It accepts only letters.";
         return;
     }
 
     if(!regexForPhone.test(phone.value)) {
-        errorMessage.value = "Phone is not valid. It accepts only numbers and special symbols";
+        errorMessage.value = "Phone is not valid. It accepts only numbers and special symbols.";
         return;
     }
     
