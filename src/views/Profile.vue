@@ -7,33 +7,64 @@
             <TodoList />
         </div>
     </div>
-  </template>
-  <script setup>
-  import UserProfile from '../components/User/UserProfile.vue';
-  import TodoList from '../components/Todo/TodoList.vue';
-  const user = JSON.parse(localStorage.getItem("user"));
+</template>
+<script setup>
+import UserProfile from '../components/User/UserProfile.vue';
+import TodoList from '../components/Todo/TodoList.vue';
+const user = JSON.parse(localStorage.getItem("user"));
+
+</script>
   
-  </script>
-  
-  <style lang="scss" scoped>
+<style lang="scss" scoped>
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+    max-width: 1200px;
+    margin: 40px auto;
+
+    .user_wrapper {
+        padding: 15px;
+        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        width: 25%;
+        position: sticky;
+        top: 20px;
+        height: max-content;
+    }
+
+    .todo_wrapper {
+        width: 75%;
+    }
+}
+
+@media all and (max-width: 1200px) {
     .wrapper {
-        display: flex;
-        justify-content: space-between;
-        gap: 50px;
-        max-width: 1200px;
-        margin: 40px auto;
+        margin: 30px 15px;
 
         .user_wrapper {
-            padding: 15px;
-            box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.2);
-            border-radius: 10px;
-            width: 25%;
-            position: sticky;
-            top: 20px;
-            height: max-content;
+            width: 30%;
         }
+
         .todo_wrapper {
-            width: 75%;
+            width: 70%;
         }
     }
-  </style>
+}
+
+@media all and (max-width: 767px) {
+    .wrapper {
+        flex-wrap: wrap;
+
+        .user_wrapper {
+            width: 100%;
+            position: relative;
+        }
+
+        .todo_wrapper {
+            width: 100%;
+        }
+    }
+
+}
+</style>

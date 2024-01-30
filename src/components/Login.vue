@@ -23,32 +23,37 @@
     </div>
 </template>
 <script setup>
-import { ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 import { useRouter } from 'vue-router';
 const router = useRouter()
 
 const username = ref();
 const phone = ref();
 const errorMessage = ref();
+const users = ref([]);
+
+onBeforeMount(async () => {
+    const response = await fetch('https://jsonplaceholder.typicode.com/users');
+    const data = await response.json();
+    users.value.push(...data);
+})
 
 const onSubmit = async () => {
     const regexForUsername = /^[A-Za-z]+$/;
-    // const regexForPhone = /^[0-9][-]\s+$/;
+    const regexForPhone = /[0-9 ()\-\+]+$/;
 
     if(!regexForUsername.test(username.value)) {
         errorMessage.value = "Username is not valid. It accepts only alphabetic characters";
         return;
     }
 
-    // if(!regexForPhone.test(phone.value)) {
-    //     errorMessage.value = "Phone is not valid. It accepts only numbers and special symbols";
-    //     return;
-    // }
+    if(!regexForPhone.test(phone.value)) {
+        errorMessage.value = "Phone is not valid. It accepts only numbers and special symbols";
+        return;
+    }
     
-    const response = await fetch('https://jsonplaceholder.typicode.com/users');
-    const users = await response.json();
 
-    const isUser = users.find(user => user.username === username.value && user.phone === phone.value);
+    const isUser = users.value.find(user => user.username === username.value && user.phone === phone.value);
     if (isUser) {
         localStorage.setItem('user', JSON.stringify(isUser));
         router.push('/profile');

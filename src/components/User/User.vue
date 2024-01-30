@@ -28,6 +28,7 @@ const user = computed(() => props.users.find(user => user.id == props.id))
     gap: 10px;
 
     .user_image {
+        min-width: 60px;
         width: 60px;
         height: 60px;
         background: rgb(90, 90, 246);
@@ -50,6 +51,7 @@ const user = computed(() => props.users.find(user => user.id == props.id))
 
     &.small {
         .user_image {
+            min-width: 30px;
             width: 30px;
             height: 30px;
 

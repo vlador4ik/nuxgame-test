@@ -227,6 +227,7 @@ const createTodo = async () => {
 .filters {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 20px;
     margin: 20px 0;
 
@@ -234,7 +235,7 @@ const createTodo = async () => {
         background: $grey;
         border-radius: 10px;
         border: 1px solid transparent;
-        padding: 5px 15px;
+        padding: 5px 10px;
         color: #fff;
         font-size: 18px;
         transition: .3s all ease-in;
@@ -245,6 +246,39 @@ const createTodo = async () => {
             background: transparent;
             color: $black;
             border-color: $black;
+        }
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .todos_wrapper {
+        li {
+            width: 31%;
+        }
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .todos_wrapper {
+        li {
+            width: 48%;
+        }
+    }
+}
+
+@media all and (max-width: 767px) {
+
+    .add_todo {
+        .input_wrapper {
+            input {
+                width: 100%;
+                margin-top: 10px;
+            }
+        }
+    }
+    .todos_wrapper {
+        li {
+            width: 100%;
         }
     }
 }
