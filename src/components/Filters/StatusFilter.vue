@@ -9,16 +9,18 @@
    </div>
 </template>
 <script setup>
-import { ref, watchEffect } from 'vue';
 
-const status = ref('all');
-const emit = defineEmits(['statusChanged']);
+const status = defineModel();
 
-watchEffect(() => {
-    emit('statusChanged', status.value);
-});
-
-const clearFilter = () => {
-    status.value = 'all';
-}
 </script>
+
+<style lang="scss" scoped>
+@import '../../assets/variables.scss';
+    .status {
+        select {
+            padding: 5px 0;
+            border: 2px solid $green;
+            border-radius: 10px;
+        }
+    }
+</style>

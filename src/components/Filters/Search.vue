@@ -5,12 +5,18 @@
     </div>
 </template>
 <script setup>
-import { ref, watchEffect } from 'vue';
 
-const searchValue = ref('');
-const emit = defineEmits(['searchChanged']);
+const searchValue = defineModel();
 
-watchEffect(() => {
-    emit('searchChanged', searchValue.value);
-})
 </script>
+
+<style lang="scss" scoped>
+@import '../../assets/variables.scss';
+    .search {
+        input {
+            padding: 6px 10px;
+            border-radius: 10px;
+            border: 2px solid $green;
+        }
+    }
+</style>

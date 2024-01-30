@@ -7,15 +7,20 @@
    </div>
 </template>
 <script setup>
-import { ref, watchEffect } from 'vue';
 
-const users = ref('all');
-const emit = defineEmits(['userChanged']);
+const users = defineModel();
 
 const userIds = [1,2,3,4,5,6,7,8,9,10];
 
-watchEffect(() => {
-    emit('userChanged', users.value);
-});
-
 </script>
+
+<style lang="scss" scoped>
+@import '../../assets/variables.scss';
+.user {
+    select {
+        padding: 5px 0;
+        border: 2px solid $green;
+        border-radius: 10px;
+    }
+}
+</style>

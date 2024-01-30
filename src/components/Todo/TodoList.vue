@@ -10,13 +10,14 @@
                 <label for="title">Title</label>
                 <input type="text" v-model="title" id="title" placeholder="Title">
             </div>
-            <button class="add" @click="createTodo">Add</button>
+            <p class="error_message"> {{ errorMessage }}</p>
+            <button class="add_todo-btn" @click="createTodo">Add</button>
         </div>
     </div>
     <div class="filters">
-        <Search @filter-reset="onFilterReset" @search-changed="onSearchChanged" />
-        <user-filter @user-changed="onUserChanged" />
-        <status-filter @status-changed="onStatusChanged" />
+        <Search v-model="search" />
+        <user-filter v-model="userFilter" />
+        <status-filter v-model="statusFilter" />
 
         <div @click="onFilterReset" class="clear_filter">
             <span>Clear Filter</span>
@@ -46,6 +47,7 @@ const statusFilter = ref('all');
 const search = ref();
 const userId = ref('');
 const title = ref('');
+const errorMessage = ref('');
 
 onBeforeMount(async () => {
     const response = await fetch('https://jsonplaceholder.typicode.com/todos');
@@ -102,18 +104,6 @@ const filteredTodos = computed(() => {
 
 });
 
-const onUserChanged = (newSelectedUser) => {
-    userFilter.value = newSelectedUser;
-};
-
-const onSearchChanged = (newValue) => {
-    search.value = newValue;
-};
-
-const onStatusChanged = (newStatus) => {
-    statusFilter.value = newStatus;
-}
-const emit = defineEmits(['filterReset']);
 const onFilterReset = () => {
     search.value = '';
     userFilter.value = 'all';
@@ -122,23 +112,33 @@ const onFilterReset = () => {
 }
 
 const createTodo = async () => {
-    if (!userId.value || !title.value) return;
-    const response = await fetch('https://jsonplaceholder.typicode.com/todos', {
-        method: 'POST',
-        data: JSON.stringify({ user_id: userId.value, title: title.value })
-    })
+    if (!userId.value || !title.value) {
+        errorMessage.value = 'Please enter user id and title';
+        return;
+    }
 
-    const data = await response.json();
-    if (data) {
-        todos.push({
-            userId: userId.value,
-            title: title.value,
-            id: data.id,
-            completed: false
+    try {
+        errorMessage.value = '';
+        const response = await fetch('https://jsonplaceholder.typicode.com/todos', {
+            method: 'POST',
+            body: JSON.stringify({ user_id: userId.value, title: title.value })
         });
 
-        userId.value = '';
-        title.value = '';
+        const data = await response.json();
+        if (data) {
+            todos.push({
+                userId: userId.value,
+                title: title.value,
+                id: data.id,
+                completed: false
+            });
+
+            userId.value = '';
+            title.value = '';
+        }
+
+    } catch (err) {
+        console.log("Error in add new todo: ", err);
     }
 }
 
@@ -151,6 +151,25 @@ const createTodo = async () => {
     padding: 10px;
     box-shadow: $shadow;
     border-radius: 10px;
+
+    &-btn {
+        background: $green;
+        outline: none;
+        cursor: pointer;
+        border: 1px solid transparent;
+        padding: 5px 35px;
+        border-radius: 10px;
+        color: #fff;
+        font-size: 18px;
+        transition: .3s all ease-in;
+
+        &:hover {
+            transition: .3s all ease-in;
+            background: transparent;
+            color: $black;
+            border-color: $green;
+        }
+    }
 
     .create_title {
         font-size: 35px;
@@ -181,24 +200,14 @@ const createTodo = async () => {
             }
         }
 
-        .add {
-            background: $green;
-            outline: none;
-            cursor: pointer;
-            border: 1px solid transparent;
-            padding: 5px 35px;
-            border-radius: 10px;
-            color: #fff;
-            font-size: 18px;
-            transition: .3s all ease-in;
+    }
 
-            &:hover {
-                transition: .3s all ease-in;
-                background: transparent;
-                color: $black;
-                border-color: $green;
-            }
-        }
+    .error_message {
+        color: red;
+        margin-top: 0;
+        margin-bottom: 20px;
+        font-size: 15px;
+        font-weight: 500;
     }
 }
 
@@ -212,6 +221,31 @@ const createTodo = async () => {
     li {
         width: 32%;
         list-style: none;
+    }
+}
+
+.filters {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin: 20px 0;
+
+    .clear_filter {
+        background: $grey;
+        border-radius: 10px;
+        border: 1px solid transparent;
+        padding: 5px 15px;
+        color: #fff;
+        font-size: 18px;
+        transition: .3s all ease-in;
+        cursor: pointer;
+
+        &:hover {
+            transition: .3s all ease-in;
+            background: transparent;
+            color: $black;
+            border-color: $black;
+        }
     }
 }
 </style>
