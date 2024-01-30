@@ -108,7 +108,6 @@ const onFilterReset = () => {
     search.value = '';
     userFilter.value = 'all';
     statusFilter.value = 'all';
-    emit('filterReset');
 }
 
 const createTodo = async () => {
