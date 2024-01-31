@@ -8,6 +8,9 @@
     "build": "webpack --mode production",
 	  "start": "webpack serve --mode production --open"
   },
+  "engines": {
+    "node": "18.16"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
